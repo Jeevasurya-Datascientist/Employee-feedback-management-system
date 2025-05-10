@@ -1,0 +1,173 @@
+-- Create the database
+CREATE DATABASE IF NOT EXISTS user_system;
+
+-- Use the database
+USE user_system;
+
+-- Create the employees table
+CREATE TABLE IF NOT EXISTS employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    company VARCHAR(100),
+    role VARCHAR(50)
+);
+
+-- Create the feedback table
+CREATE TABLE IF NOT EXISTS feedback (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    feedback TEXT NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES employees(id) ON DELETE SET NULL
+);
+
+ALTER TABLE `employees`
+ADD COLUMN `profile_picture_path` VARCHAR(255) NULL DEFAULT NULL AFTER `role`;
+
+CREATE TABLE `bug_reports` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `reporter_user_id` INT NULL,
+  `page_url` VARCHAR(512) NULL,
+  `description` TEXT NOT NULL,
+  `status` VARCHAR(50) NOT NULL DEFAULT 'New',
+  `reported_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`reporter_user_id`) REFERENCES `employees`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE password_resets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(64) NOT NULL UNIQUE, -- Store the hex representation of the token
+    expires_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES employees(id) ON DELETE CASCADE -- Optional: link to employees table
+);
+
+-- Add an index for faster token lookups
+CREATE INDEX idx_token ON password_resets (token);
+-- Add an index for cleaning up expired tokens
+CREATE INDEX idx_expires_at ON password_resets (expires_at);
+
+
+
+-- !! ALL users below have the SAME PLAIN TEXT password: 'password123' !!
+-- !! THIS IS VERY INSECURE - DO NOT USE FOR REAL APPLICATIONS !!
+
+SET NAMES utf8mb4;
+
+-- Batch 1
+INSERT INTO employees (name, email, password, created_at, company, role, profile_picture_path) VALUES
+('Aarav Sharma', 'aarav.sharma1@accenture.com', 'password123', NOW(), 'Company A', 'Manager', NULL),
+('Vihaan Verma', 'vihaan.verma2@zoho.com', 'password123', NOW(), 'Company B', 'Developer', NULL),
+('Aditya Gupta', 'aditya.gupta3@capgemini.com', 'password123', NOW(), 'Company C', 'Team Leader', '/uploads/profile_pics/indian_sample1.jpg'),
+('Vivaan Singh', 'vivaan.singh4@accenture.com', 'password123', NOW(), 'Company A', 'Developer', NULL),
+('Arjun Kumar', 'arjun.kumar5@zohocorp.com', 'password123', NOW(), 'Company B', 'Manager', NULL),
+('Reyansh Patel', 'reyansh.patel6@capgemini.com', 'password123', NOW(), 'Company C', 'Designer', NULL),
+('Sai Shah', 'sai.shah7@accenture.com', 'password123', NOW(), 'Company A', 'QA Tester', NULL),
+('Arnav Khan', 'arnav.khan8@zoho.com', 'password123', NOW(), 'Company B', 'Intern', NULL),
+('Ishaan Reddy', 'ishaan.reddy9@capgemini.com', 'password123', NOW(), 'Company C', 'Developer', NULL),
+('Rohan Joshi', 'rohan.joshi10@accenture.com', 'password123', NOW(), 'Company A', 'Team Leader', NULL),
+('Amit Nair', 'amit.nair11@zohocorp.com', 'password123', NOW(), 'Company B', 'Data Scientist', '/uploads/profile_pics/indian_sample2.jpg'),
+('Rajesh Rao', 'rajesh.rao12@capgemini.com', 'password123', NOW(), 'Company C', 'Project Manager', NULL),
+('Suresh Iyer', 'suresh.iyer13@accenture.com', 'password123', NOW(), 'Company A', 'Manager', NULL),
+('Vikram Pillai', 'vikram.pillai14@zoho.com', 'password123', NOW(), 'Company B', 'Designer', NULL),
+('Deepak Mehta', 'deepak.mehta15@capgemini.com', 'password123', NOW(), 'Company C', 'QA Tester', NULL),
+('Prakash Desai', 'prakash.desai16@accenture.com', 'password123', NOW(), 'Company A', 'Developer', NULL),
+('Sanjay Jain', 'sanjay.jain17@zohocorp.com', 'password123', NOW(), 'Company B', 'Developer', NULL),
+('Rahul Malhotra', 'rahul.malhotra18@capgemini.com', 'password123', NOW(), 'Company C', 'Intern', NULL),
+('Anil Chopra', 'anil.chopra19@accenture.com', 'password123', NOW(), 'Company A', 'Project Manager', NULL),
+('Sunil Kapoor', 'sunil.kapoor20@zoho.com', 'password123', NOW(), 'Company B', 'Team Leader', NULL),
+('Ananya Menon', 'ananya.menon21@capgemini.com', 'password123', NOW(), 'Company C', 'Data Scientist', NULL),
+('Diya Agarwal', 'diya.agarwal22@accenture.com', 'password123', NOW(), 'Company A', 'QA Tester', NULL),
+('Siya Banerjee', 'siya.banerjee23@zohocorp.com', 'password123', NOW(), 'Company B', 'Developer', NULL),
+('Rhea Chatterjee', 'rhea.chatterjee24@capgemini.com', 'password123', NOW(), 'Company C', 'Designer', NULL),
+('Myra Mukherjee', 'myra.mukherjee25@accenture.com', 'password123', NOW(), 'Company A', 'Manager', '/uploads/profile_pics/indian_sample3.jpg');
+
+-- Batch 2
+INSERT INTO employees (name, email, password, created_at, company, role, profile_picture_path) VALUES
+('Saanvi Das', 'saanvi.das26@zoho.com', 'password123', NOW(), 'Company B', 'Team Leader', NULL),
+('Shanaya Mishra', 'shanaya.mishra27@capgemini.com', 'password123', NOW(), 'Company C', 'Intern', NULL),
+('Aadhya Pandey', 'aadhya.pandey28@accenture.com', 'password123', NOW(), 'Company A', 'Developer', NULL),
+('Kiara Trivedi', 'kiara.trivedi29@zohocorp.com', 'password123', NOW(), 'Company B', 'QA Tester', NULL),
+('Anika Dubey', 'anika.dubey30@capgemini.com', 'password123', NOW(), 'Company C', 'Designer', NULL),
+('Priya Sharma', 'priya.sharma31@accenture.com', 'password123', NOW(), 'Company A', 'Team Leader', NULL),
+('Pooja Verma', 'pooja.verma32@zoho.com', 'password123', NOW(), 'Company B', 'Manager', NULL),
+('Neha Gupta', 'neha.gupta33@capgemini.com', 'password123', NOW(), 'Company C', 'Developer', NULL),
+('Meera Singh', 'meera.singh34@accenture.com', 'password123', NOW(), 'Company A', 'Data Scientist', '/uploads/profile_pics/indian_sample1.jpg'),
+('Aisha Kumar', 'aisha.kumar35@zohocorp.com', 'password123', NOW(), 'Company B', 'Intern', NULL),
+('Kavita Patel', 'kavita.patel36@capgemini.com', 'password123', NOW(), 'Company C', 'Team Leader', NULL),
+('Sunita Shah', 'sunita.shah37@accenture.com', 'password123', NOW(), 'Company A', 'Project Manager', NULL),
+('Geeta Khan', 'geeta.khan38@zoho.com', 'password123', NOW(), 'Company B', 'Developer', NULL),
+('Rani Reddy', 'rani.reddy39@capgemini.com', 'password123', NOW(), 'Company C', 'Designer', NULL),
+('Lakshmi Joshi', 'lakshmi.joshi40@accenture.com', 'password123', NOW(), 'Company A', 'QA Tester', NULL),
+('Ishaan Nair', 'ishaan.nair41@zohocorp.com', 'password123', NOW(), 'Company B', 'Team Leader', NULL),
+('Arnav Rao', 'arnav.rao42@capgemini.com', 'password123', NOW(), 'Company C', 'Developer', NULL),
+('Sai Iyer', 'sai.iyer43@accenture.com', 'password123', NOW(), 'Company A', 'Intern', NULL),
+('Reyansh Pillai', 'reyansh.pillai44@zoho.com', 'password123', NOW(), 'Company B', 'Manager', NULL),
+('Arjun Mehta', 'arjun.mehta45@capgemini.com', 'password123', NOW(), 'Company C', 'Data Scientist', NULL),
+('Vivaan Desai', 'vivaan.desai46@accenture.com', 'password123', NOW(), 'Company A', 'Team Leader', NULL),
+('Aditya Jain', 'aditya.jain47@zohocorp.com', 'password123', NOW(), 'Company B', 'Designer', NULL),
+('Vihaan Malhotra', 'vihaan.malhotra48@capgemini.com', 'password123', NOW(), 'Company C', 'Project Manager', NULL),
+('Aarav Chopra', 'aarav.chopra49@accenture.com', 'password123', NOW(), 'Company A', 'Manager', NULL),
+('Rohan Kapoor', 'rohan.kapoor50@zoho.com', 'password123', NOW(), 'Company B', 'Developer', NULL);
+
+-- Batch 3
+INSERT INTO employees (name, email, password, created_at, company, role, profile_picture_path) VALUES
+('Amit Menon', 'amit.menon51@capgemini.com', 'password123', NOW(), 'Company C', 'Team Leader', NULL),
+('Rajesh Agarwal', 'rajesh.agarwal52@accenture.com', 'password123', NOW(), 'Company A', 'Intern', NULL),
+('Suresh Banerjee', 'suresh.banerjee53@zohocorp.com', 'password123', NOW(), 'Company B', 'Designer', NULL),
+('Vikram Chatterjee', 'vikram.chatterjee54@capgemini.com', 'password123', NOW(), 'Company C', 'Manager', NULL),
+('Deepak Mukherjee', 'deepak.mukherjee55@accenture.com', 'password123', NOW(), 'Company A', 'Developer', NULL),
+('Prakash Das', 'prakash.das56@zoho.com', 'password123', NOW(), 'Company B', 'QA Tester', NULL),
+('Sanjay Mishra', 'sanjay.mishra57@capgemini.com', 'password123', NOW(), 'Company C', 'Data Scientist', NULL),
+('Rahul Pandey', 'rahul.pandey58@accenture.com', 'password123', NOW(), 'Company A', 'Team Leader', NULL),
+('Anil Trivedi', 'anil.trivedi59@zohocorp.com', 'password123', NOW(), 'Company B', 'Project Manager', NULL),
+('Sunil Dubey', 'sunil.dubey60@capgemini.com', 'password123', NOW(), 'Company C', 'Manager', '/uploads/profile_pics/indian_sample2.jpg'),
+('Ananya Sharma', 'ananya.sharma61@accenture.com', 'password123', NOW(), 'Company A', 'Designer', NULL),
+('Diya Verma', 'diya.verma62@zoho.com', 'password123', NOW(), 'Company B', 'QA Tester', NULL),
+('Siya Gupta', 'siya.gupta63@capgemini.com', 'password123', NOW(), 'Company C', 'Intern', NULL),
+('Rhea Singh', 'rhea.singh64@accenture.com', 'password123', NOW(), 'Company A', 'Manager', NULL),
+('Myra Kumar', 'myra.kumar65@zohocorp.com', 'password123', NOW(), 'Company B', 'Team Leader', NULL),
+('Saanvi Patel', 'saanvi.patel66@capgemini.com', 'password123', NOW(), 'Company C', 'Developer', NULL),
+('Shanaya Shah', 'shanaya.shah67@accenture.com', 'password123', NOW(), 'Company A', 'Data Scientist', NULL),
+('Aadhya Khan', 'aadhya.khan68@zoho.com', 'password123', NOW(), 'Company B', 'Project Manager', NULL),
+('Kiara Reddy', 'kiara.reddy69@capgemini.com', 'password123', NOW(), 'Company C', 'Developer', NULL),
+('Anika Joshi', 'anika.joshi70@accenture.com', 'password123', NOW(), 'Company A', 'Team Leader', NULL),
+('Priya Nair', 'priya.nair71@zohocorp.com', 'password123', NOW(), 'Company B', 'QA Tester', NULL),
+('Pooja Rao', 'pooja.rao72@capgemini.com', 'password123', NOW(), 'Company C', 'Manager', NULL),
+('Neha Iyer', 'neha.iyer73@accenture.com', 'password123', NOW(), 'Company A', 'Designer', NULL),
+('Meera Pillai', 'meera.pillai74@zoho.com', 'password123', NOW(), 'Company B', 'Intern', NULL),
+('Aisha Mehta', 'aisha.mehta75@capgemini.com', 'password123', NOW(), 'Company C', 'Team Leader', NULL);
+
+-- Batch 4
+INSERT INTO employees (name, email, password, created_at, company, role, profile_picture_path) VALUES
+('Kavita Desai', 'kavita.desai76@accenture.com', 'password123', NOW(), 'Company A', 'QA Tester', NULL),
+('Sunita Jain', 'sunita.jain77@zohocorp.com', 'password123', NOW(), 'Company B', 'Developer', NULL),
+('Geeta Malhotra', 'geeta.malhotra78@capgemini.com', 'password123', NOW(), 'Company C', 'Manager', NULL),
+('Rani Chopra', 'rani.chopra79@accenture.com', 'password123', NOW(), 'Company A', 'Data Scientist', NULL),
+('Lakshmi Kapoor', 'lakshmi.kapoor80@zoho.com', 'password123', NOW(), 'Company B', 'Team Leader', '/uploads/profile_pics/indian_sample3.jpg'),
+('Aarav Menon', 'aarav.menon81@capgemini.com', 'password123', NOW(), 'Company C', 'Project Manager', NULL),
+('Vihaan Agarwal', 'vihaan.agarwal82@accenture.com', 'password123', NOW(), 'Company A', 'Manager', NULL),
+('Aditya Banerjee', 'aditya.banerjee83@zohocorp.com', 'password123', NOW(), 'Company B', 'QA Tester', NULL),
+('Vivaan Chatterjee', 'vivaan.chatterjee84@capgemini.com', 'password123', NOW(), 'Company C', 'Developer', NULL),
+('Arjun Mukherjee', 'arjun.mukherjee85@accenture.com', 'password123', NOW(), 'Company A', 'Team Leader', NULL),
+('Reyansh Das', 'reyansh.das86@zoho.com', 'password123', NOW(), 'Company B', 'Manager', NULL),
+('Sai Mishra', 'sai.mishra87@capgemini.com', 'password123', NOW(), 'Company C', 'Intern', NULL),
+('Arnav Pandey', 'arnav.pandey88@accenture.com', 'password123', NOW(), 'Company A', 'Designer', NULL),
+('Ishaan Trivedi', 'ishaan.trivedi89@zohocorp.com', 'password123', NOW(), 'Company B', 'Developer', NULL),
+('Rohan Dubey', 'rohan.dubey90@capgemini.com', 'password123', NOW(), 'Company C', 'QA Tester', NULL),
+('Amit Sharma', 'amit.sharma91@accenture.com', 'password123', NOW(), 'Company A', 'Data Scientist', NULL),
+('Rajesh Verma', 'rajesh.verma92@zoho.com', 'password123', NOW(), 'Company B', 'Team Leader', NULL),
+('Suresh Gupta', 'suresh.gupta93@capgemini.com', 'password123', NOW(), 'Company C', 'Project Manager', NULL),
+('Vikram Singh', 'vikram.singh94@accenture.com', 'password123', NOW(), 'Company A', 'Developer', NULL),
+('Deepak Kumar', 'deepak.kumar95@zohocorp.com', 'password123', NOW(), 'Company B', 'Designer', NULL),
+('Prakash Patel', 'prakash.patel96@capgemini.com', 'password123', NOW(), 'Company C', 'Team Leader', NULL),
+('Sanjay Shah', 'sanjay.shah97@accenture.com', 'password123', NOW(), 'Company A', 'QA Tester', NULL),
+('Rahul Khan', 'rahul.khan98@zoho.com', 'password123', NOW(), 'Company B', 'Developer', NULL),
+('Anil Reddy', 'anil.reddy99@capgemini.com', 'password123', NOW(), 'Company C', 'Intern', NULL),
+('Sunil Joshi', 'sunil.joshi100@accenture.com', 'password123', NOW(), 'Company A', 'Manager', NULL);

@@ -1,0 +1,24 @@
+ 1.Accenture
+Common Email Format: firstname.lastname@accenture.com
+
+Example: rahul.sharma@accenture.com
+
+Email Ending: @accenture.com
+
+2. Zoho
+Common Email Format: firstname@zoho.com or firstname.lastname@zohocorp.com
+
+Example:
+
+arun@zoho.com (for general Zoho product support/sales)
+
+arun.kumar@zohocorp.com (for Zoho corporate staff)
+
+Email Endings: @zoho.com, @zohocorp.com
+
+3. Capgemini
+Common Email Format: firstname.lastname@capgemini.com
+
+Example: meena.ravi@capgemini.com
+
+Email Ending: @capgemini.com
